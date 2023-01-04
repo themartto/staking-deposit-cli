@@ -96,14 +96,14 @@ def generate_keys_arguments_decorator(function: Callable[..., Any]) -> Callable[
             callback=captive_prompt_callback(
                 validate_password_strength,
                 lambda:load_text(['keystore_password', 'prompt'], func='generate_keys_arguments_decorator'),
-                lambda:load_text(['keystore_password', 'confirm'], func='generate_keys_arguments_decorator'),
-                lambda: load_text(['keystore_password', 'mismatch'], func='generate_keys_arguments_decorator'),
+                None,
+                lambda: True,
                 True,
             ),
             help=lambda: load_text(['keystore_password', 'help'], func='generate_keys_arguments_decorator'),
             hide_input=True,
             param_decls='--keystore_password',
-            prompt=lambda: load_text(['keystore_password', 'prompt'], func='generate_keys_arguments_decorator'),
+            prompt=lambda: 'password',
         ),
         jit_option(
             callback=validate_eth1_withdrawal_address,
@@ -129,8 +129,8 @@ def generate_keys(ctx: click.Context, validator_start_index: int,
     chain_setting = get_chain_setting(chain)
     if not os.path.exists(folder):
         os.mkdir(folder)
-    click.clear()
-    click.echo(RHINO_0)
+#     click.clear()
+#     click.echo(RHINO_0)
     click.echo(load_text(['msg_key_creation']))
     credentials = CredentialList.from_mnemonic(
         mnemonic=mnemonic,
@@ -148,4 +148,4 @@ def generate_keys(ctx: click.Context, validator_start_index: int,
     if not verify_deposit_data_json(deposits_file, credentials.credentials):
         raise ValidationError(load_text(['err_verify_deposit']))
     click.echo(load_text(['msg_creation_success']) + folder)
-    click.pause(load_text(['msg_pause']))
+#     click.pause(load_text(['msg_pause']))

@@ -527,7 +527,12 @@ python3 -m pytest .
 ```
 
 ### Building Binaries
-**Developers Only**
+
+```
+python3 setup.py install
+
+pyinstaller --onefile --add-data staking_deposit/:staking_deposit/ staking_deposit/deposit.py
+```
 ##### Mac M1 Binaries
 
 👋This is not the section you are looking for.👋
