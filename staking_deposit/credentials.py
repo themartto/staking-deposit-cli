@@ -1,4 +1,6 @@
 import os
+import sys
+
 import click
 from enum import Enum
 import time
@@ -189,7 +191,7 @@ class CredentialList:
                         for index in indices])
 
     def export_keystores(self, password: str, folder: str) -> List[str]:
-        with click.progressbar(self.credentials, label=load_text(['msg_keystore_creation']),
+        with click.progressbar(self.credentials, label=None,
                                show_percent=False, show_pos=True) as credentials:
             return [credential.save_signing_keystore(password=password, folder=folder) for credential in credentials]
 
@@ -198,6 +200,8 @@ class CredentialList:
                                show_percent=False, show_pos=True) as credentials:
             deposit_data = [cred.deposit_datum_dict for cred in credentials]
         filefolder = os.path.join(folder, 'deposit_data-%i.json' % time.time())
+        # TODO modify 2
+        print(json.dump(deposit_data, sys.stdout, default=lambda x: x.hex()))
         with open(filefolder, 'w') as f:
             json.dump(deposit_data, f, default=lambda x: x.hex())
         if os.name == 'posix':
@@ -206,7 +210,7 @@ class CredentialList:
 
     def verify_keystores(self, keystore_filefolders: List[str], password: str) -> bool:
         with click.progressbar(zip(self.credentials, keystore_filefolders),
-                               label=load_text(['msg_keystore_verification']),
+                               label='',
                                length=len(self.credentials), show_percent=False, show_pos=True) as items:
             return all(credential.verify_keystore(keystore_filefolder=filefolder, password=password)
                        for credential, filefolder in items)

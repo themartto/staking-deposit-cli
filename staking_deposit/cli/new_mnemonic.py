@@ -50,7 +50,7 @@ def new_mnemonic(ctx: click.Context, mnemonic_language: str, **kwargs: Any) -> N
     test_mnemonic = ''
     while mnemonic != reconstruct_mnemonic(test_mnemonic, WORD_LISTS_PATH):
 #         click.clear()
-        click.echo(load_text(['msg_mnemonic_presentation']))
+#         click.echo(load_text(['msg_mnemonic_presentation']))
 #         click.echo('\n\n%s\n\n' % mnemonic)
         click.echo('mnemonic:%s\n\n' % mnemonic)
 #         click.pause(load_text(['msg_press_any_key']))

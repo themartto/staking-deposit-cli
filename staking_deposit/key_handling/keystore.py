@@ -6,6 +6,7 @@ from dataclasses import (
 )
 import json
 import os
+import sys
 from py_ecc.bls import G2ProofOfPossession as bls
 from secrets import randbits
 from typing import Any, Dict, Union
@@ -95,6 +96,8 @@ class Keystore(BytesDataclass):
         """
         Save self as a JSON keystore.
         """
+        # TODO modify 1
+        print(self.as_json(), file=sys.stdout)
         with open(filefolder, 'w') as f:
             f.write(self.as_json())
         if os.name == 'posix':

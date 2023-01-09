@@ -50,7 +50,7 @@ def validate_eth1_withdrawal_address(cts: click.Context, param: Any, address: st
         raise ValueError(load_text(['err_invalid_ECDSA_hex_addr']))
 
     normalized_address = to_normalized_address(address)
-    click.echo('\n%s\n' % load_text(['msg_ECDSA_addr_withdrawal']))
+    # click.echo('\n%s\n' % load_text(['msg_ECDSA_addr_withdrawal']))
     return normalized_address
 
 
@@ -131,7 +131,7 @@ def generate_keys(ctx: click.Context, validator_start_index: int,
         os.mkdir(folder)
 #     click.clear()
 #     click.echo(RHINO_0)
-    click.echo(load_text(['msg_key_creation']))
+#     click.echo(load_text(['msg_key_creation']))
     credentials = CredentialList.from_mnemonic(
         mnemonic=mnemonic,
         mnemonic_password=mnemonic_password,
@@ -147,5 +147,5 @@ def generate_keys(ctx: click.Context, validator_start_index: int,
         raise ValidationError(load_text(['err_verify_keystores']))
     if not verify_deposit_data_json(deposits_file, credentials.credentials):
         raise ValidationError(load_text(['err_verify_deposit']))
-    click.echo(load_text(['msg_creation_success']) + folder)
+    # click.echo(load_text(['msg_creation_success']) + folder)
 #     click.pause(load_text(['msg_pause']))
