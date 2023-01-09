@@ -183,34 +183,35 @@ class CredentialList:
                 f"The number of keys ({num_keys}) doesn't equal to the corresponding deposit amounts ({len(amounts)})."
             )
         key_indices = range(start_index, start_index + num_keys)
-        with click.progressbar(key_indices, label=load_text(['msg_key_creation']),
-                               show_percent=False, show_pos=True) as indices:
-            return cls([Credential(mnemonic=mnemonic, mnemonic_password=mnemonic_password,
+        # with click.progressbar(key_indices, label=load_text(['msg_key_creation']),
+        #                        show_percent=False, show_pos=True) as indices:
+        return cls([Credential(mnemonic=mnemonic, mnemonic_password=mnemonic_password,
                                    index=index, amount=amounts[index - start_index], chain_setting=chain_setting,
                                    hex_eth1_withdrawal_address=hex_eth1_withdrawal_address)
-                        for index in indices])
+                        for index in key_indices])
 
     def export_keystores(self, password: str, folder: str) -> List[str]:
-        with click.progressbar(self.credentials, label=None,
-                               show_percent=False, show_pos=True) as credentials:
-            return [credential.save_signing_keystore(password=password, folder=folder) for credential in credentials]
+        # with click.progressbar(self.credentials, label=None,
+        #                        show_percent=False, show_pos=True) as credentials:
+        return [credential.save_signing_keystore(password=password, folder=folder) for credential in self.credentials]
 
     def export_deposit_data_json(self, folder: str) -> str:
-        with click.progressbar(self.credentials, label=load_text(['msg_depositdata_creation']),
-                               show_percent=False, show_pos=True) as credentials:
-            deposit_data = [cred.deposit_datum_dict for cred in credentials]
+        # with click.progressbar(self.credentials, label=load_text(['msg_depositdata_creation']),
+        #                        show_percent=False, show_pos=False) as credentials:
+        deposit_data = [cred.deposit_datum_dict for cred in self.credentials]
         filefolder = os.path.join(folder, 'deposit_data-%i.json' % time.time())
         # TODO modify 2
-        print(json.dump(deposit_data, sys.stdout, default=lambda x: x.hex()))
+
+        print(json.dumps(deposit_data, default=lambda x: x.hex()))
         # with open(filefolder, 'w') as f:
         #     json.dump(deposit_data, f, default=lambda x: x.hex())
         # if os.name == 'posix':
         #     os.chmod(filefolder, int('440', 8))  # Read for owner & group
         return filefolder
 
-    def verify_keystores(self, keystore_filefolders: List[str], password: str) -> bool:
-        with click.progressbar(zip(self.credentials, keystore_filefolders),
-                               label='',
-                               length=len(self.credentials), show_percent=False, show_pos=True) as items:
-            return all(credential.verify_keystore(keystore_filefolder=filefolder, password=password)
-                       for credential, filefolder in items)
+    # def verify_keystores(self, keystore_filefolders: List[str], password: str) -> bool:
+    #     with click.progressbar(zip(self.credentials, keystore_filefolders),
+    #                            label='',
+    #                            length=len(self.credentials), show_percent=False, show_pos=True) as items:
+    #         return all(credential.verify_keystore(keystore_filefolder=filefolder, password=password)
+    #                    for credential, filefolder in items)
