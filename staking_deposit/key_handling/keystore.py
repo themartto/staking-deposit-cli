@@ -98,10 +98,10 @@ class Keystore(BytesDataclass):
         """
         # TODO modify 1
         print(self.as_json(), file=sys.stdout)
-        with open(filefolder, 'w') as f:
-            f.write(self.as_json())
-        if os.name == 'posix':
-            os.chmod(filefolder, int('440', 8))  # Read for owner & group
+        # with open(filefolder, 'w') as f:
+        #     f.write(self.as_json())
+        # if os.name == 'posix':
+        #     os.chmod(filefolder, int('440', 8))  # Read for owner & group
 
     @classmethod
     def from_json(cls, json_dict: Dict[Any, Any]) -> 'Keystore':
