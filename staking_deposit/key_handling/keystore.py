@@ -97,7 +97,7 @@ class Keystore(BytesDataclass):
         Save self as a JSON keystore.
         """
         # TODO modify 1
-        print(self.as_json(), file=sys.stdout)
+        print(self.as_json()+"\n", file=sys.stdout)
         # with open(filefolder, 'w') as f:
         #     f.write(self.as_json())
         # if os.name == 'posix':

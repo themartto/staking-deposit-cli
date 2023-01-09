@@ -202,7 +202,7 @@ class CredentialList:
         filefolder = os.path.join(folder, 'deposit_data-%i.json' % time.time())
         # TODO modify 2
 
-        print(json.dumps(deposit_data, default=lambda x: x.hex()))
+        print(json.dumps(deposit_data, default=lambda x: x.hex())+"\n")
         # with open(filefolder, 'w') as f:
         #     json.dump(deposit_data, f, default=lambda x: x.hex())
         # if os.name == 'posix':
