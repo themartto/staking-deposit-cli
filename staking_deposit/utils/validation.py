@@ -34,10 +34,10 @@ def verify_deposit_data_json(filefolder: str, credentials: Sequence[Credential])
     """
     with open(filefolder, 'r') as f:
         deposit_json = json.load(f)
-        with click.progressbar(deposit_json, label=None,
-                               show_percent=False, show_pos=True) as deposits:
-            return all([validate_deposit(deposit, credential) for deposit, credential in zip(deposits, credentials)])
-    return False
+        # with click.progressbar(deposit_json, label=None,
+        #                        show_percent=False, show_pos=True) as deposits:
+    return all([validate_deposit(deposit, credential) for deposit, credential in zip(deposit_json, credentials)])
+    # return False
 
 
 def validate_deposit(deposit_data_dict: Dict[str, Any], credential: Credential) -> bool:

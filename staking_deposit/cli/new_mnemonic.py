@@ -52,7 +52,7 @@ def new_mnemonic(ctx: click.Context, mnemonic_language: str, **kwargs: Any) -> N
 #         click.clear()
 #         click.echo(load_text(['msg_mnemonic_presentation']))
 #         click.echo('\n\n%s\n\n' % mnemonic)
-        click.echo('mnemonic:%s\n\n' % mnemonic)
+        click.echo(mnemonic)
 #         click.pause(load_text(['msg_press_any_key']))
         test_mnemonic = mnemonic
 #         click.clear()

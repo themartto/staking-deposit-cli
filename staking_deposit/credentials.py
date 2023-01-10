@@ -45,6 +45,7 @@ class Credential:
     A Credential object contains all of the information for a single validator and the corresponding functionality.
     Once created, it is the only object that should be required to perform any processing for a validator.
     """
+
     def __init__(self, *, mnemonic: str, mnemonic_password: str,
                  index: int, amount: int, chain_setting: BaseChainSetting,
                  hex_eth1_withdrawal_address: Optional[HexAddress]):
@@ -100,8 +101,8 @@ class Credential:
             withdrawal_credentials = BLS_WITHDRAWAL_PREFIX
             withdrawal_credentials += SHA256(self.withdrawal_pk)[1:]
         elif (
-            self.withdrawal_type == WithdrawalType.ETH1_ADDRESS_WITHDRAWAL
-            and self.eth1_withdrawal_address is not None
+                self.withdrawal_type == WithdrawalType.ETH1_ADDRESS_WITHDRAWAL
+                and self.eth1_withdrawal_address is not None
         ):
             withdrawal_credentials = ETH1_ADDRESS_WITHDRAWAL_PREFIX
             withdrawal_credentials += b'\x00' * 11
@@ -165,6 +166,7 @@ class CredentialList:
     """
     A collection of multiple Credentials, one for each validator.
     """
+
     def __init__(self, credentials: List[Credential]):
         self.credentials = credentials
 
@@ -183,25 +185,25 @@ class CredentialList:
                 f"The number of keys ({num_keys}) doesn't equal to the corresponding deposit amounts ({len(amounts)})."
             )
         key_indices = range(start_index, start_index + num_keys)
-        with click.progressbar(key_indices, label=load_text(['msg_key_creation']),
-                               show_percent=False, show_pos=True) as indices:
-            return cls([Credential(mnemonic=mnemonic, mnemonic_password=mnemonic_password,
-                                   index=index, amount=amounts[index - start_index], chain_setting=chain_setting,
-                                   hex_eth1_withdrawal_address=hex_eth1_withdrawal_address)
-                        for index in indices])
+        # with click.progressbar(key_indices, label=load_text(['msg_key_creation']),
+        #                        show_percent=False, show_pos=True) as indices:
+        return cls([Credential(mnemonic=mnemonic, mnemonic_password=mnemonic_password,
+                               index=index, amount=amounts[index - start_index], chain_setting=chain_setting,
+                               hex_eth1_withdrawal_address=hex_eth1_withdrawal_address)
+                    for index in key_indices])
 
     def export_keystores(self, password: str, folder: str) -> List[str]:
-        with click.progressbar(self.credentials, label=None,
-                               show_percent=False, show_pos=True) as credentials:
-            return [credential.save_signing_keystore(password=password, folder=folder) for credential in credentials]
+        # with click.progressbar(self.credentials, label=None,
+        #                        show_percent=False, show_pos=True) as credentials:
+        return [credential.save_signing_keystore(password=password, folder=folder) for credential in self.credentials]
 
     def export_deposit_data_json(self, folder: str) -> str:
-        with click.progressbar(self.credentials, label=load_text(['msg_depositdata_creation']),
-                               show_percent=False, show_pos=True) as credentials:
-            deposit_data = [cred.deposit_datum_dict for cred in credentials]
+        # with click.progressbar(self.credentials, label=load_text(['msg_depositdata_creation']),
+        #                        show_percent=False, show_pos=True) as credentials:
+        deposit_data = [cred.deposit_datum_dict for cred in self.credentials]
         filefolder = os.path.join(folder, 'deposit_data-%i.json' % time.time())
         # TODO modify 2
-        print(json.dump(deposit_data, sys.stdout, default=lambda x: x.hex()))
+        print(json.dumps(deposit_data, default=lambda x: x.hex()))
         with open(filefolder, 'w') as f:
             json.dump(deposit_data, f, default=lambda x: x.hex())
         if os.name == 'posix':
@@ -209,8 +211,8 @@ class CredentialList:
         return filefolder
 
     def verify_keystores(self, keystore_filefolders: List[str], password: str) -> bool:
-        with click.progressbar(zip(self.credentials, keystore_filefolders),
-                               label='',
-                               length=len(self.credentials), show_percent=False, show_pos=True) as items:
-            return all(credential.verify_keystore(keystore_filefolder=filefolder, password=password)
-                       for credential, filefolder in items)
+        # with click.progressbar(zip(self.credentials, keystore_filefolders),
+        #                        label='',
+        #                        length=len(self.credentials), show_percent=False, show_pos=True) as items:
+        return all(credential.verify_keystore(keystore_filefolder=filefolder, password=password)
+                   for credential, filefolder in zip(self.credentials, keystore_filefolders))
