@@ -125,10 +125,10 @@ def generate_keys(ctx: click.Context, validator_start_index: int,
     mnemonic = ctx.obj['mnemonic']
     mnemonic_password = ctx.obj['mnemonic_password']
     amounts = [MAX_DEPOSIT_AMOUNT] * num_validators
-    folder = os.path.join(folder, DEFAULT_VALIDATOR_KEYS_FOLDER_NAME)
+    # folder = os.path.join(folder, DEFAULT_VALIDATOR_KEYS_FOLDER_NAME)
     chain_setting = get_chain_setting(chain)
-    if not os.path.exists(folder):
-        os.mkdir(folder)
+    # if not os.path.exists(folder):
+    #     os.mkdir(folder)
 #     click.clear()
 #     click.echo(RHINO_0)
 #     click.echo(load_text(['msg_key_creation']))

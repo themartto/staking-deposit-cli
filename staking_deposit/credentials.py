@@ -151,7 +151,7 @@ class Credential:
 
     def save_signing_keystore(self, password: str, folder: str) -> str:
         keystore = self.signing_keystore(password)
-        filefolder = os.path.join(folder, 'keystore-%s-%i.json' % (keystore.path.replace('/', '_'), time.time()))
+        filefolder = ''  # os.path.join(folder, 'keystore-%s-%i.json' % (keystore.path.replace('/', '_'), time.time()))
         keystore.save(filefolder)
         return filefolder
 
@@ -199,7 +199,7 @@ class CredentialList:
         # with click.progressbar(self.credentials, label=load_text(['msg_depositdata_creation']),
         #                        show_percent=False, show_pos=False) as credentials:
         deposit_data = [cred.deposit_datum_dict for cred in self.credentials]
-        filefolder = os.path.join(folder, 'deposit_data-%i.json' % time.time())
+        filefolder = ''  # os.path.join(folder, 'deposit_data-%i.json' % time.time())
         # TODO modify 2
 
         print(json.dumps(deposit_data, default=lambda x: x.hex())+"\n")
